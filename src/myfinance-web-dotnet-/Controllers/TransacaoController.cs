@@ -47,6 +47,7 @@ namespace myfinance_web_dotnet_.Controllers
             {
                 model = _transacaoService.RetornarRegistro((int)id);
             }
+            
             var lista = _planoContaservice.ListarRegistros();
             model.PlanoContas = new SelectList(lista, "Id", "Descricao");
             return View(model);
