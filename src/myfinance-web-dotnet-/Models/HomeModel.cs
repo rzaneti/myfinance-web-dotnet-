@@ -7,7 +7,7 @@ namespace myfinance_web_dotnet_.Models
 {
     public class HomeModel
     {
-        public string Nome {get; set;}
+        public string? Nome {get; set;}
         
     }
 }

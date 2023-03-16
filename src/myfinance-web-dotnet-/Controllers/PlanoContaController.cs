@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using myfinance_web_dotnet_.Models;
+using myfinance_web_dotnet_.Domain.Services.Interfaces;
 
 namespace myfinance_web_dotnet_.Controllers
 {
@@ -13,23 +9,50 @@ namespace myfinance_web_dotnet_.Controllers
     {
         private readonly ILogger<PlanoContaController> _logger;
 
-        public PlanoContaController(ILogger<PlanoContaController> logger)
+        private readonly IPlanoContaService _planoContaService;
+
+        public PlanoContaController(ILogger<PlanoContaController> logger, IPlanoContaService planoContaservice)
         {
             _logger = logger;
+            _planoContaService = planoContaservice;
         }
 
         [HttpGet]
         [Route("Index")]
         public IActionResult Index()
         {
+            ViewBag.ListaPlanoConta = _planoContaService.ListarRegistros();
             return View();
-        } 
+        }
 
         [HttpGet]
         [Route("Cadastro")]
-        public IActionResult Cadastro()
+        [Route("Cadastro/{id}")]
+        public IActionResult Cadastro(int? id)
         {
+            if (id != null)
+            {
+                var registro = _planoContaService.RetornarRegistro((int)id);
+                return View(registro);
+            }
             return View();
-        }      
+        }
+
+        [HttpPost]
+        [Route("Cadastro")]
+        [Route("Cadastro/{id}")]
+        public IActionResult Cadastro(PlanoContaModel model)
+        {
+            _planoContaService.Salvar(model);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("Excluir/{id}")]
+        public IActionResult Excluir(int id)
+        {
+            _planoContaService.Excluir(id);
+            return RedirectToAction("Index");
+        }
     }
 }

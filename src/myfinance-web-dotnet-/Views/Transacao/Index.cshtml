@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Transações Financeiras";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a role="button" href="/Transacao/Cadastro" type="button" class="btn btn-primary btn-lg">Registrar Transação</a>
+
+<hr />
+
+<table class="table table-white table-striped">
+    <thead>
+        <tr>
+            <th col">Id</th>
+            <th col">Data</th>
+            <th col">Histórico</th>
+            <th col">Valor</th>
+            <th col">Tipo Operação</th>
+            <th col">Plano Conta</th>
+            <th col"></th>
+            <th col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in (List<TransacaoModel>)ViewBag.Transacoes)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Data</td>
+                    <td>@item.Historico</td>
+                    <td>@item.Valor</td>
+                    <td>@item.ItemPlanoConta.Tipo</td>
+                    <td>@item.ItemPlanoConta.Descricao</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-warning"
+                            onclick="Editar(@item.Id.ToString())">Editar</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-danger"
+                            onclick="Excluir(@item.Id.ToString())">Excluir</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    function Editar(id) {
+        window.location.href = "../Transacao/Cadastro/" + id
+    }
+
+    function Excluir(id) {
+        window.location.href = "../Transacao/Excluir/" + id
+    }
+</script>
